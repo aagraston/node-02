@@ -9,12 +9,12 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
-  devtool: 'eval',
+  devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       title: 'boiler-plate-3.0',
       template: './src/html/index.html',
-      filename: './html/index.html',
+      filename: './index.html',
       inject: true,
     }),
   ],
@@ -38,11 +38,25 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [['@babel/preset-env', { targets: 'defaults' }]],
+            presets: [
+              ['@babel/preset-env', { targets: 'defaults' }],
+              '@babel/preset-react',
+            ],
             plugins: [['@babel/transform-runtime']],
           },
         },
       },
     ],
+  },
+  devServer: {
+    host: 'localhost',
+    port: 3000,
+    hot: true,
+    static: [
+      { directory: path.join(__dirname, 'dist/js') },
+      { directory: path.join(__dirname, 'dist/html') },
+    ],
+    historyApiFallback: true,
+    open: true,
   },
 }
